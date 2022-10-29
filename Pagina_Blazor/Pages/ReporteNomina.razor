@@ -1,0 +1,78 @@
+﻿@page "/reportenomina"
+@inject INominaService nominaService
+
+<h3 class="text-lg-center">Reporte Nomina</h3>
+<div class="container">
+    <div class="mb-3">
+        <label for="departamento_id" class="form-label">Departamento ID</label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Mes</span>
+            <input type="number" class="form-control" @bind="mes" id="mes">
+            <span class="input-group-text" id="basic-addon1">Año</span>
+            <input type="number" class="form-control" @bind="anio" id="anio">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="GetNominaFiltrado">Buscar</button>
+        </div>
+        @if (nominas != null)
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">NominaID</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Año</th>
+                        <th scope="col">Dias Laborados</th>
+                        <th scope="col">Horas Extras</th>
+                        <th scope="col">Total Horas Extras</th>
+                        <th scope="col">Bonificacion</th>
+                        <th scope="col">Sueldo Base</th>
+                        <th scope="col">IGSS</th>
+                        <th scope="col">IRTRA</th>
+                        <th scope="col">INTECAP</th>
+                        <th scope="col">Sueldo Liquido</th>
+                        <th scope="col">Empleado ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var nomina in nominas)
+                    {
+                        <tr>
+                            <th scope="row">@nomina.NominaId</th>
+                            <td>@nomina.Mes</td>
+                            <td>@nomina.Anio</td>
+                            <td>@nomina.DiasLaborados</td>
+                            <td>@nomina.HorasExtras</td>
+                            <td>@nomina.TotalHorasExtras</td>
+                            <td>@nomina.BonificacionIncentivo</td>
+                            <td>@nomina.SueldoBase</td>
+                            <td>@nomina.IGSS</td>
+                            <td>@nomina.IRTRA</td>
+                            <td>@nomina.Intecap</td>
+                            <td>@nomina.SueldoLiquido</td>
+                            <td>@nomina.EmpleadoId</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+    </div>
+</div>
+
+@code {
+    private List<Nomina> nominas { get; set; }
+    private int mes { get; set; }
+    private int anio { get; set; }
+    private string error { get; set; }
+
+    private async Task GetNominaFiltrado()
+    {
+        try
+        {
+            nominas = await nominaService.GetNominaFiltrado(mes, anio);
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+}

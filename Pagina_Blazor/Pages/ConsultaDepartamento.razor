@@ -1,0 +1,65 @@
+﻿@page "/consultadepartamento"
+@inject IDepartamentoService departamentoService
+
+<PageTitle>Consulta Departamento</PageTitle>
+<h3 class="text-lg-center">Consulta Departamento</h3>
+<div class="container">
+    @if (departamentos != null)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">EmpresaId</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var departamento in departamentos)
+                {
+                    <tr>
+                        <th scope="row">@departamento.DepartamentoId</th>
+                        <td>@departamento.Nombre</td>
+                        <td>@departamento.EmpresaId</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @error
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private List<Departamento>? departamentos { get; set; }
+    private string error { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            departamentos = await departamentoService.GetDepartamento();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+}

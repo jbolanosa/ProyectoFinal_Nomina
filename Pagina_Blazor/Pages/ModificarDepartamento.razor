@@ -1,0 +1,78 @@
+﻿@page "/modificardepartamento"
+@inject IEmpresaService empresaService
+@inject IDepartamentoService departamentoService
+
+<h3 class="text-lg-center">Modificar Departamento</h3>
+<div class="container">
+    @if(Exito)
+    {
+        <div class="alert alert-success" role="alert">
+            ¡La operacion se realizo con exito!
+        </div>
+    }
+    else
+    {
+        <div class="mb-3">
+            <label for="departamento_id" class="form-label">Departamento ID</label>
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Departamento ID" aria-label="Codigo Empleado" aria-describedby="button-addon2" @bind="DepartamentoId" id="departamento_id">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="GetDepartamento">Buscar</button>
+            </div>
+        </div>
+
+        @if (departamento != null && empresa != null)
+        {
+            <div class="mb-3">
+                <label for="departamento_nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="departamento_nombre" placeholder="Recursos humanos" @bind="departamento.Nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="empresa_nombre" class="form-label">Empresa</label>
+                <input type="email" class="form-control" id="empresa_nombre" value="@empresa.Nombre" disabled>
+            </div>
+            <button type="button" class="btn btn-primary" @onclick="PutDepartamento">Modificar</button>
+        }
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @error
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private Empresa? empresa { get; set; }
+    private string error { get; set; }
+    private Departamento? departamento { get; set; }
+    private int DepartamentoId { get; set; }
+    private bool Exito { get; set; }
+
+    private async Task GetDepartamento()
+    {
+        try
+        {
+            empresa = await empresaService.GetEmpresa(1);
+            departamento = await departamentoService.GetDepartamento(DepartamentoId);
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+
+    private async Task PutDepartamento()
+    {
+        try
+        {
+            var response = await departamentoService.PutDepartamento(DepartamentoId, departamento);
+            Exito = response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+}

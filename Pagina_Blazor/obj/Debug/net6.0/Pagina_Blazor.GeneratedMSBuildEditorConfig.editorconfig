@@ -1,0 +1,83 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = browser
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = true
+build_property.IncludeAllContentForSelfExtract = 
+build_property.RootNamespace = Pagina_Blazor
+build_property.RootNamespace = Pagina_Blazor
+build_property.ProjectDir = C:\Users\Meme\source\repos\Proyecto_Final_DW\Pagina_Blazor\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Meme\source\repos\Proyecto_Final_DW\Pagina_Blazor
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/AgregarDepartamento.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWdyZWdhckRlcGFydGFtZW50by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/AgregarEmpleado.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWdyZWdhckVtcGxlYWRvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/AgregarPuesto.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWdyZWdhclB1ZXN0by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/ConsultaDepartamento.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uc3VsdGFEZXBhcnRhbWVudG8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/ConsultaEmpleado.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uc3VsdGFFbXBsZWFkby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/ConsultaPuesto.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uc3VsdGFQdWVzdG8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/GenerarNomina.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhck5vbWluYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/ModificarDepartamento.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kaWZpY2FyRGVwYXJ0YW1lbnRvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/ModificarEmpleado.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kaWZpY2FyRW1wbGVhZG8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/ModificarPuesto.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kaWZpY2FyUHVlc3RvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/ReporteNomina.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZU5vbWluYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-lhic6yv68d
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-h3cs13cxxt
+
+[C:/Users/Meme/source/repos/Proyecto_Final_DW/Pagina_Blazor/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-01iu61i3xc

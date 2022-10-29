@@ -1,0 +1,76 @@
+﻿@page "/consultaempleado"
+@inject IEmpleadoService empleadoService
+
+<PageTitle>Consulta Empleado</PageTitle>
+<h3 class="text-lg-center">Consulta Empleado</h3>
+<div class="container">
+    @if (empleados != null)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">DPI</th>
+                    <th scope="col">NIT</th>
+                    <th scope="col">Telefono</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Salario Base</th>
+                    <th scope="col">PuestoId</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var empleado in empleados)
+                {
+                    <tr>
+                        <th scope="row">@empleado.EmpleadoId</th>
+                        <td>@empleado.Nombres</td>
+                        <td>@empleado.Apellidos</td>
+                        <td>@empleado.DPI</td>
+                        <td>@empleado.NIT</td>
+                        <td>@empleado.Telefono</td>
+                        <td>@empleado.Estado</td>
+                        <td>@empleado.SalarioBase</td>
+                        <td>@empleado.PuestoId</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @error
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private List<Empleado>? empleados { get; set; }
+    private string error { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            empleados = await empleadoService.GetEmpleado();
+        }
+        catch(Exception e)
+        {
+            error = e.Message;
+        }
+    }
+}

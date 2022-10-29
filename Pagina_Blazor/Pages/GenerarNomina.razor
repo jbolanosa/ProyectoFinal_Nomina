@@ -1,0 +1,159 @@
+﻿@page "/generarnomina"
+@using Pagina_Blazor.Models
+@using Pagina_Blazor.Services
+@inject IEmpleadoService empleadoService
+@inject INominaService nominaService
+
+<PageTitle>Generar Nomina</PageTitle>
+<h3 class="text-lg-center">Generar Nomina</h3>
+
+<div class="container">
+
+    @if(Exito)
+    {
+        <div class="alert alert-success" role="alert">
+            ¡La operacion se realizo con exito!
+        </div>
+    }
+    else
+    {
+        <div class="input-group mb-3">
+            <input type="number" class="form-control" placeholder="Codigo Empleado" aria-label="Codigo Empleado" aria-describedby="button-addon2" @bind="EmpleadoId" required>
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="GetEmpleado">Buscar</button>
+        </div>
+        @if (empleado != null)
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombres</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">DPI</th>
+                        <th scope="col">NIT</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Salario Base</th>
+                        <th scope="col">PuestoId</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">@empleado.EmpleadoId</th>
+                        <td>@empleado.Nombres</td>
+                        <td>@empleado.Apellidos</td>
+                        <td>@empleado.DPI</td>
+                        <td>@empleado.NIT</td>
+                        <td>@empleado.Telefono</td>
+                        <td>@empleado.Estado</td>
+                        <td>@empleado.SalarioBase</td>
+                        <td>@empleado.PuestoId</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="container">
+                <div class="mb-3">
+                    <label for="dias_laborados" class="form-label">Dias Laborados</label>
+                    <input type="number" class="form-control" id="dias_laborados" @bind="nomina.DiasLaborados">
+                </div>
+
+                <div class="mb-3">
+                    <label for="mes" class="form-label">Mes</label>
+                    <input type="number" class="form-control" id="mes" @bind="nomina.Mes">
+                </div>
+
+                <div class="mb-3">
+                    <label for="anio" class="form-label">Año</label>
+                    <input type="number" class="form-control" id="anio" @bind="nomina.Anio">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Horas Extras</span>
+                    <input type="text" class="form-control" @bind="nomina.HorasExtras">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Bonificacion Incentivo.</span>
+                    <input type="text" class="form-control" @bind="nomina.BonificacionIncentivo">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">IGSS Q.</span>
+                    <input type="number" class="form-control" value="@nomina.IGSS" disabled>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">IRTRA Q.</span>
+                    <input type="number" class="form-control" value="@nomina.IRTRA" disabled>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">INTECAP Q.</span>
+                    <input type="number" class="form-control" value="@nomina.Intecap" disabled>
+                </div>
+                <button type="button" class="btn btn-primary" @onclick="PostNomina">Agregar</button>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @error
+            </div>
+        }
+    }
+    
+</div>
+
+
+@code {
+    private Empleado? empleado { get; set; }
+    private string error { get; set; }
+    private int EmpleadoId;
+    private bool Exito { get; set; }
+
+    private Nomina? nomina = new Nomina();
+
+    private async Task GetEmpleado()
+    {
+        error = string.Empty;
+        try
+        {
+            empleado = await empleadoService.GetEmpleado(EmpleadoId);
+            CalcularNomina();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+
+        }
+
+    }
+
+    private void CalcularNomina()
+    {
+        nomina.EmpleadoId = empleado.EmpleadoId;
+        nomina.BonificacionIncentivo = 250;
+        nomina.HorasExtras = 0;
+        nomina.SueldoBase = empleado.SalarioBase;
+        nomina.IGSS = nomina.SueldoBase * 0.0483;
+        nomina.IRTRA = nomina.SueldoBase * 0.01;
+        nomina.Intecap = nomina.SueldoBase * 0.01;
+
+    }
+
+
+
+    private async Task PostNomina()
+    {
+        try
+        {
+            nomina.TotalHorasExtras = nomina.SueldoBase / 30 / 8 * 1.5 * nomina.HorasExtras;
+            nomina.SueldoLiquido = nomina.SueldoBase - nomina.IGSS - nomina.IRTRA - nomina.Intecap + nomina.BonificacionIncentivo + nomina.TotalHorasExtras;
+            var response = await nominaService.PostNomina(nomina);
+            Exito = response.IsSuccessStatusCode;
+        }
+        catch(Exception e)
+        {
+            error = e.Message;
+        }
+    }
+}

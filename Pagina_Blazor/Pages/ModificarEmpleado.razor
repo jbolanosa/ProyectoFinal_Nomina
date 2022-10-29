@@ -1,0 +1,128 @@
+﻿@page "/modificarempleado"
+@inject IPuestoService puestoService
+@inject IEmpleadoService empleadoService
+
+<PageTitle>Modificar Empleado</PageTitle>
+<h3 class="text-lg-center">Modificar Empleado</h3>
+<div class="container">
+    @if (Exito)
+    {
+        <div class="alert alert-success" role="alert">
+            ¡La operacion se realizo con exito!
+        </div>
+    }
+    else
+    {
+        <div class="mb-3">
+            <label for="empleado_id" class="form-label">Puesto ID</label>
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Puesto ID" aria-label="Codigo Empleado" aria-describedby="button-addon2" @bind="EmpleadoId" id="empleado_id">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="GetEmpleado">Buscar</button>
+            </div>
+        </div>
+
+        @if (empleado != null && puestos != null)
+        {
+            <div class="mb-3">
+                <label for="nombres" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombres" placeholder="Nombres" @bind="empleado.Nombres" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="apellidos" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" @bind="empleado.Apellidos" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="DPI" class="form-label">DPI</label>
+                <input type="number" class="form-control" id="DPI" placeholder="DPI" @bind="empleado.DPI" required>
+            </div>
+            <div class="mb-3">
+                <label for="nit" class="form-label">NIT</label>
+                <input type="number" class="form-control" id="nit" placeholder="NIT" @bind="empleado.NIT" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Telefono</label>
+                <input type="tel" class="form-control" id="telefono" placeholder="Telefono" @bind="empleado.Telefono" required>
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Direccion</label>
+                <input type="text" class="form-control" id="direccion" placeholder="Direccion" @bind="empleado.DireccionFiscal" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Estado" class="form-label">Estado</label>
+                <select class="form-select" aria-label="Default select example" @bind="empleado.Estado" id="Estado">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="Fecha" class="form-label">Fecha Ingreso</label>
+                <input type="datetime-local" class="form-control" id="Fecha" placeholder="Fecha" @bind="empleado.FechaIngreso" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Salario" class="form-label">Salario Base</label>
+                <input type="number" class="form-control" id="Salario" placeholder="Salario" @bind="empleado.SalarioBase" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="puesto_id" class="form-label">Puesto</label>
+                <select class="form-select" aria-label="Default select example" @bind="empleado.PuestoId" id="puesto_id">
+                    <option value="0">Ninguno</option>
+                    @foreach (var puesto in puestos)
+                    {
+                        <option value="@puesto.PuestoId">@puesto.Nombre</option>
+                    }
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" @onclick="PutEmpleado">Modificar</button>
+        }
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @error
+            </div>
+        }
+
+    }
+</div>
+@code {
+    private List<Puesto>? puestos { get; set; }
+    private string error { get; set; }
+    private Empleado? empleado { get; set; }
+    private int EmpleadoId { get; set; }
+    private bool Exito { get; set; }
+
+    private async Task GetEmpleado()
+    {
+
+        try
+        {
+            puestos = await puestoService.GetPuesto();
+            empleado = await empleadoService.GetEmpleado(EmpleadoId);
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+
+    private async Task PutEmpleado()
+    {
+
+        try
+        {
+            var response = await empleadoService.PutEmpleado(EmpleadoId, empleado);
+            Exito = response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+}

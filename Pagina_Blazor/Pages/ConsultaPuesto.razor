@@ -1,0 +1,65 @@
+﻿@page "/consultapuesto"
+@inject IPuestoService puestoService
+
+<PageTitle>Consulta Puesto</PageTitle>
+<h3 class="text-lg-center">Consulta Puesto</h3>
+
+<div class="container">
+    @if (puestos != null)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">DepartamentoId</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var puesto in puestos)
+                {
+                    <tr>
+                        <th scope="row">@puesto.PuestoId</th>
+                        <td>@puesto.Nombre</td>
+                        <td>@puesto.DepartamentoId</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @error
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private List<Puesto>? puestos { get; set; }
+    private string error { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            puestos = await puestoService.GetPuesto();
+        }
+        catch(Exception e)
+        {
+            error = e.Message;
+        }
+    }
+}

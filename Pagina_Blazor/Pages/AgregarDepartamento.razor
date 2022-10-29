@@ -1,0 +1,81 @@
+﻿@page "/agregardepartamento"
+@inject IEmpresaService empresaService
+@inject IDepartamentoService departamentoService
+
+<PageTitle>Agregar Departamento</PageTitle>
+<h3 class="text-lg-center">Agregar Departamento</h3>
+<div class="container">
+
+    @if(Exito)
+    {
+        <div class="alert alert-success" role="alert">
+            ¡La operacion se realizo con exito!
+        </div>
+    }
+    else
+    {
+        @if (empresa != null)
+        {
+            <div class="mb-3">
+                <label for="departamento_nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="departamento_nombre" placeholder="Recursos humanos" @bind="departamento.Nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="empresa_nombre" class="form-label">Empresa</label>
+                <input type="email" class="form-control" id="empresa_nombre" value="@empresa.Nombre" disabled>
+            </div>
+            <button type="button" class="btn btn-primary" @onclick="agregarDepartamento">Agregar</button>
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(error))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @error
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            }
+
+        }
+    }
+</div>
+
+@code {
+    private Empresa? empresa { get; set; }
+    private string error { get; set; }
+    private Departamento? departamento = new Departamento() { EmpresaId = 1 };
+    private bool Exito { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            empresa = await empresaService.GetEmpresa(1);
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+    private async Task agregarDepartamento()
+    {
+        try
+        {
+            var response = await departamentoService.PostDepartamento(departamento);
+            Exito = response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+}

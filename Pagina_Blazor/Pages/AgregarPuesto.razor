@@ -1,0 +1,88 @@
+﻿@page "/agregarpuesto"
+@inject IPuestoService puestoService
+@inject IDepartamentoService departamentoService
+
+<PageTitle>Agregar Puesto</PageTitle>
+<h3 class="text-lg-center">Agregar Puesto</h3>
+<div class="container">
+    @if(Exito)
+    {
+        <div class="alert alert-success" role="alert">
+            ¡La operacion se realizo con exito!
+        </div>
+    }
+    else
+    {
+        @if (departamentos != null)
+        {
+            <div class="mb-3">
+                <label for="departamento_nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="departamento_nombre" placeholder="Programador" @bind="puesto.Nombre" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="departamento_id" class="form-label">Departamento</label>
+                <select class="form-select" aria-label="Default select example" @bind="puesto.DepartamentoId" id="departamento_id">
+                    <option value="0">Ninguno</option>
+                    @foreach (var departamento in departamentos)
+                    {
+                        <option value="@departamento.DepartamentoId">@departamento.Nombre</option>
+                    }
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" @onclick="PostPuesto">Agregar</button>
+
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(error))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @error
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            }
+        }
+    }
+    
+</div>
+
+
+@code {
+    private List<Departamento>? departamentos { get; set; }
+    private string error { get; set; }
+    private Puesto? puesto = new Puesto();
+    private bool Exito { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            departamentos = await departamentoService.GetDepartamento();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+    private async Task PostPuesto(){
+        try
+        {
+            var response = await puestoService.PostPuesto(puesto);
+            Exito = response.IsSuccessStatusCode;
+        }
+        catch(Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+}

@@ -1,0 +1,84 @@
+﻿@page "/modificarpuesto"
+@inject IPuestoService puestoService
+@inject IDepartamentoService departamentoService
+
+<h3 class="text-lg-center">Modificar Puesto</h3>
+<div class="container">
+    @if (Exito)
+    {
+        <div class="alert alert-success" role="alert">
+            ¡La operacion se realizo con exito!
+        </div>
+    }
+    else
+    {
+        <div class="mb-3">
+            <label for="puesto_id" class="form-label">Puesto ID</label>
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Puesto ID" aria-label="Codigo Empleado" aria-describedby="button-addon2" @bind="PuestoId" id="puesto_id">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="GetPuesto">Buscar</button>
+            </div>
+        </div>
+
+        @if (puesto != null && departamentos != null)
+        {
+            <div class="mb-3">
+                <label for="departamento_nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="departamento_nombre" placeholder="Programador" @bind="puesto.Nombre" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="departamento_id" class="form-label">Departamento</label>
+                <select class="form-select" aria-label="Default select example" @bind="puesto.DepartamentoId" id="departamento_id">
+                    <option value="0">Ninguno</option>
+                    @foreach (var departamento in departamentos)
+                    {
+                        <option value="@departamento.DepartamentoId">@departamento.Nombre</option>
+                    }
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" @onclick="PutPuesto">Modificar</button>
+        }
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @error
+            </div>
+        }
+    }
+    
+</div>
+
+@code {
+    private List<Departamento>? departamentos { get; set; }
+    private string error { get; set; }
+    private Puesto? puesto { get; set; }
+    private int PuestoId { get; set; }
+    private bool Exito { get; set; }
+
+    private async Task GetPuesto()
+    {
+        try
+        {
+            departamentos = await departamentoService.GetDepartamento();
+            puesto = await puestoService.GetPuesto(PuestoId);
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+    private async Task PutPuesto()
+    {
+        try
+        {
+            var respose = await puestoService.PutPuesto(PuestoId, puesto);
+            Exito = respose.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+}
